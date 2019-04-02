@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <arg name="set_service_name"    default="/ball_chaser/command_robot" />
+    
+    <!-- The drive_bot node -->
+    <node name="drive_bot" type="drive_bot" pkg="ball_chaser" output="screen">
+        <param name="robot_speed_topic"     value="/cmd_vel" />
+        <param name="service_name"          value="$(arg set_service_name)" />
+    </node>
+    
+    <node name="process_image" type="process_image" pkg="ball_chaser" output="screen">
+        <param name="service_name"          	value="$(arg set_service_name)" />
+        <param name="image_topic"          	value="/camera/rgb/image_raw" />
+        <param name="show_ocv_result"          	value="true" />
+        <rosparam>
+            # [left, forward right]
+            win_width_thresholds: [0.4, 0.2, 0.4]
+            speed_thresholds: [0.0, 0.5, 0.0, 0.8]
+            ball_area_threasholds: [5, 3000]
+        </rosparam>
+    </node>
+
+</launch>
